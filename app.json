@@ -21,10 +21,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fluenttalk"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2c4605ad-d0a7-46c5-8237-e4a4cbd62be0"
+      }
+    },
+    "owner": "500griven",
+    "experiments": {
+      "tsconfigPaths": true
     }
   }
 }
