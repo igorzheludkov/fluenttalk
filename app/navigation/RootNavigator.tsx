@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MainBottomTabs } from '@/types/INavigation'
-import DialogStack from '@/screens/DialogStack'
+import DialogsStack from '@/screens/DialogsStack'
 
 const Tab = createBottomTabNavigator<MainBottomTabs>()
 
@@ -10,7 +10,7 @@ export default function Tabs() {
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name='DayStack'
-        component={DialogStack}
+        component={DialogsStack}
         options={{
           tabBarLabel: 'Dialogs',
           headerPressColor: 'blue',

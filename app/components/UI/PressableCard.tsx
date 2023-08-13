@@ -24,18 +24,19 @@ interface PressableCardProps extends TouchableOpacityProps {
   imageSource?: string
   imageSize?: DimensionValue
   disabled?: boolean
+  onPress?: () => void
 }
 
 export default function PressableCard(props: PressableCardProps) {
   const {
-    bgColor = ColorTheme.buttonPrimaryBackground,
+    bgColor,
     borderRadius = 5,
-    borderWidth = 1,
-    borderColor = ColorTheme.buttonPrimaryBackground,
+    borderWidth = 0,
+    borderColor,
     width = 'auto',
     height = 120,
     fontSize = 16,
-    fontColor = ColorTheme.buttonPrimaryText,
+    fontColor = ColorTheme.text,
     imageSource,
     imageSize = 50,
     children,
@@ -52,10 +53,8 @@ export default function PressableCard(props: PressableCardProps) {
     borderWidth,
     width,
     height,
-    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    paddingHorizontal: 10,
     paddingVertical: 5,
     ...restProps
   }
@@ -66,19 +65,27 @@ export default function PressableCard(props: PressableCardProps) {
   }
 
   return (
-    <TouchableOpacity style={[styles.wrapper, buttonStyles]} onPress={onPress} disabled={disabled}>
-      {imageSource ? (
-        <Image source={{ uri: imageSource }} style={{ width: imageSize, height: imageSize }} />
-      ) : (
-        <View style={{ width: imageSize, height: imageSize, backgroundColor: 'lightgray' }} />
-      )}
-      <Text style={textStyles}>{children}</Text>
+    <TouchableOpacity style={[buttonStyles, styles.wrapper]} onPress={onPress} disabled={disabled}>
+      <View style={{ width: imageSize }}>
+        {imageSource ? (
+          <Image
+            source={{ uri: imageSource }}
+            style={[{ width: imageSize, height: imageSize }, styles.image]}
+          />
+        ) : (
+          <View style={[{ width: imageSize, height: imageSize, backgroundColor: 'gray' }, styles.image]} />
+        )}
+        <Text style={[textStyles, styles.text]}>{children}</Text>
+      </View>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // alignSelf: 'center'
-  }
+  wrapper: {},
+  image: {
+    borderRadius: 5,
+    marginBottom: 8
+  },
+  text: {}
 })

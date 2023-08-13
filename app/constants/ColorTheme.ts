@@ -19,8 +19,8 @@ const ColorTheme = {
   // Button Colors
   buttonPrimaryBackground: '#007BFF',
   buttonPrimaryText: '#FFFFFF',
-  buttonSecondaryBackground: '#FFA500',
-  buttonSecondaryText: '#FFFFFF',
+  buttonSecondaryBackground: '#D9D9D9',
+  buttonSecondaryText: '#666666',
   buttonDisabledBackground: '#F5F5F5',
   buttonDisabledText: '#666666'
 
