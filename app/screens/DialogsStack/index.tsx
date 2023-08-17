@@ -7,7 +7,7 @@ import SubCategoryScreen from '@/screens/DialogsStack/SubCategoryScreen'
 
 const Stack = createNativeStackNavigator()
 
-export default function DialogsStack() {
+export default function DialogStack() {
   return (
       <Stack.Navigator>
         <Stack.Screen name='Dialogs' component={CategoriesScreen} />

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'
 import { dialogCategories } from '@/data/testData'
 import ColorTheme from '@/constants/ColorTheme'
+import LoginSignUpScreen from '@/screens/AuthStack/LoginSignUp'
 
 export default function CategoriesScreen() {
   return (

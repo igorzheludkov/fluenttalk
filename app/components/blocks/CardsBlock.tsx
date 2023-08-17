@@ -36,9 +36,9 @@ export default function CardsBlock(props: IProps) {
             key={item.id}
             onPress={() => props.onPressItem(item)}
             imageSource={item.imageSource}
-            width={130}
+            width={125}
             height={180}
-            imageSize={120}
+            imageSize={115}
             bgColor='lightgray'
           >
             <Text>{item.title}</Text>

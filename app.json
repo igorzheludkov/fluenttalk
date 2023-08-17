@@ -35,6 +35,12 @@
     "owner": "500griven",
     "experiments": {
       "tsconfigPaths": true
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2c4605ad-d0a7-46c5-8237-e4a4cbd62be0"
     }
   }
 }

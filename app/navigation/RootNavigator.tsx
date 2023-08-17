@@ -1,22 +1,16 @@
 import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { MainBottomTabs } from '@/types/INavigation'
-import DialogsStack from '@/screens/DialogsStack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import MainTabs from '@/navigation/MainTabs'
+import AuthStack from '@/screens/AuthStack'
+import { TRootNavigator } from '@/types/INavigation'
 
-const Tab = createBottomTabNavigator<MainBottomTabs>()
+const Stack = createNativeStackNavigator<TRootNavigator>()
 
-export default function Tabs() {
+export default function RootNavigator() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen
-        name='DayStack'
-        component={DialogsStack}
-        options={{
-          tabBarLabel: 'Dialogs',
-          headerPressColor: 'blue',
-        }}
-      />
-    
-    </Tab.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='MainTabs' component={MainTabs} />
+      <Stack.Screen name='AuthStack' component={AuthStack} />
+    </Stack.Navigator>
   )
 }
