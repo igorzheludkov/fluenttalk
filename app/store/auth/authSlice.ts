@@ -3,29 +3,33 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/store'
 import { User } from 'firebase/auth'
 
-// Define a type for the slice state
-interface InitialState {
-  user: User | undefined
+interface AuthState {
+  user: User | null
+  isAuthLoading: boolean
 }
 
-// Define the initial state using that type
-const initialState: InitialState = {
-  user: undefined
+const initialState: AuthState = {
+  user: null,
+  isAuthLoading: true
 }
 
-export const counterSlice = createSlice({
-  name: 'app',
-  // `createSlice` will infer the state type from the `initialState` argument
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload
+      state.isAuthLoading = false
+    },
+    setAuthLoading: (state, action: PayloadAction<boolean>) => {
+      state.isAuthLoading = action.payload
     }
   }
 })
 
-export const { setUser } = counterSlice.actions
+export const { setUser, setAuthLoading } = authSlice.actions
 
-// Other code such as selectors can use the imported `RootState` type
+export const selectUser = (state: RootState) => state.auth.user
+export const selectIsAuthLoading = (state: RootState) => state.auth.isAuthLoading
 
-export default counterSlice.reducer
+export default authSlice.reducer

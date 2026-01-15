@@ -4,14 +4,25 @@ import RootNavigator from '@/navigation/RootNavigator'
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import { StatusBar } from 'expo-status-bar'
+import useAuthStateListener from '@/hooks/useAuthStateListener'
 
-function App() {
+function AppContent() {
+  useAuthStateListener()
+
   return (
-    <Provider store={store}>
+    <>
       <StatusBar />
       <NavigationContainer>
         <RootNavigator />
       </NavigationContainer>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Provider store={store}>
+      <AppContent />
     </Provider>
   )
 }

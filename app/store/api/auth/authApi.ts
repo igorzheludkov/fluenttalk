@@ -1,24 +1,12 @@
 import apiSlice from '../apiSlice'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User } from 'firebase/auth'
-import { auth, app } from '@/firebase/firebaseConfig'
+import { auth } from '@/firebase/firebaseConfig'
 import { setUser } from '@/store/auth/authSlice'
-// import {addPost, editPost, removePost, updatePosts} from '../../posts/slice';
 
-export const postsApi = apiSlice.injectEndpoints({
+export const authApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    // signUp: build.query<TPost[], void>({
-    //   // providesTags: ['Posts'],
-    //   query: () => '/posts/',
-    //   // async onQueryStarted(undefined, { dispatch, queryFulfilled }) {
-    //   //   try {
-    //   //     const result = await queryFulfilled
-    //   //     dispatch(updatePosts(result.data))
-    //   //   } catch (e) {}
-    //   // }
-    // }),
     signUp: build.mutation<User, { email: string; password: string }>({
-      // invalidatesTags: ['Posts'],
-      queryFn: async ({ email, password }, thunkAPI) => {
+      queryFn: async ({ email, password }) => {
         try {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password)
           const user: User = userCredential.user
@@ -29,16 +17,9 @@ export const postsApi = apiSlice.injectEndpoints({
           return { error: { data: errorMessage, status: errorCode } }
         }
       }
-      // async onQueryStarted({payload}, {dispatch, queryFulfilled}) {
-      //   try {
-      //     const result = await queryFulfilled;
-      //     result && dispatch(addPost(payload));
-      //   } catch (e) {}
-      // },
     }),
     signIn: build.mutation<User, { email: string; password: string }>({
-      // invalidatesTags: ['Posts'],
-      queryFn: async ({ email, password }, thunkAPI) => {
+      queryFn: async ({ email, password }) => {
         try {
           const userCredential = await signInWithEmailAndPassword(auth, email, password)
           const user: User = userCredential.user
@@ -56,9 +37,8 @@ export const postsApi = apiSlice.injectEndpoints({
         } catch (e) {}
       }
     }),
-    signOut: build.mutation({
-      // invalidatesTags: ['Posts'],
-      queryFn: async ({ email, password }, thunkAPI) => {
+    signOut: build.mutation<string, void>({
+      queryFn: async () => {
         try {
           await signOut(auth)
           return { data: 'Signed out successfully!' }
@@ -68,17 +48,15 @@ export const postsApi = apiSlice.injectEndpoints({
           return { error: { data: errorMessage, status: errorCode } }
         }
       },
-      async onQueryStarted({}, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled
-          dispatch(setUser(undefined))
+          dispatch(setUser(null))
         } catch (e) {}
       }
     })
   }),
-  overrideExisting: false
+  overrideExisting: true
 })
 
-export default postsApi
-
-export const { useSignInMutation, useSignUpMutation, useSignOutMutation } = postsApi
+export const { useSignInMutation, useSignUpMutation, useSignOutMutation } = authApi

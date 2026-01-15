@@ -10,10 +10,12 @@ const ColorTheme = {
   // Background Colors
   background: '#FFFFFF',
   backgroundDark: '#F5F5F5',
+  cardBackground: '#FFFFFF',
 
   // Text Colors
   text: '#333333',
   textLight: '#666666',
+  textSecondary: '#666666',
   textDark: '#000000',
 
   // Button Colors
@@ -23,8 +25,6 @@ const ColorTheme = {
   buttonSecondaryText: '#666666',
   buttonDisabledBackground: '#F5F5F5',
   buttonDisabledText: '#666666'
-
-  // ...
 }
 
 export default ColorTheme

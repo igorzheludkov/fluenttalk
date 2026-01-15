@@ -1,22 +1,23 @@
 import Button from '@/components/UI/Button'
 import PressableCard from '@/components/UI/PressableCard'
 import ColorTheme from '@/constants/ColorTheme'
-import { IDialogCategory } from '@/types/IDialogs'
-import React from 'react'
+import { IDialogCategoryWithSubs, IDialogSubCategory } from '@/types/IDialogs'
 import { StyleSheet, View, Text, ScrollView } from 'react-native'
 
 interface IProps {
   title: string
-  items: IDialogCategory
-  onPressMore: (item: any) => void
-  onPressItem: (item: any) => void
+  category: IDialogCategoryWithSubs
+  onPressMore: (categoryId: string) => void
+  onPressItem: (subCategory: IDialogSubCategory) => void
 }
 
 export default function CardsBlock(props: IProps) {
+  const { category, title, onPressMore, onPressItem } = props
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.title}>{title}</Text>
         <Button
           bgColor={ColorTheme.background}
           borderColor={ColorTheme.buttonSecondaryBackground}
@@ -25,23 +26,22 @@ export default function CardsBlock(props: IProps) {
           borderRadius={15}
           height={20}
           borderWidth={1}
-          onPress={() => props.onPressMore(props.items.id)}
+          onPress={() => onPressMore(category.id)}
         >
           More
         </Button>
       </View>
       <ScrollView horizontal contentContainerStyle={styles.cards}>
-        {props.items.data.map((item) => (
+        {category.subCategories.map((subCategory) => (
           <PressableCard
-            key={item.id}
-            onPress={() => props.onPressItem(item)}
-            imageSource={item.imageSource}
+            key={subCategory.id}
+            onPress={() => onPressItem(subCategory)}
             width={125}
             height={180}
             imageSize={115}
-            bgColor='lightgray'
+            bgColor="lightgray"
           >
-            <Text>{item.title}</Text>
+            <Text>{subCategory.name}</Text>
           </PressableCard>
         ))}
       </ScrollView>

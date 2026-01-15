@@ -1,40 +1,56 @@
-import useFirebaseAuth from '@/hooks/useFirebaseAuth'
-import { useSignInMutation, useSignOutMutation, useSignUpMutation } from '@/store/api/auth/authApi'
-import { useAppSelector } from '@/store/hooks'
 import React, { useState } from 'react'
-import { View, StyleSheet, TextInput, Button } from 'react-native'
+import { View, StyleSheet, TextInput, Button, Text } from 'react-native'
+import { useSignInMutation, useSignUpMutation } from '@/store/api/auth/authApi'
 
-const AuthForm = ({ isSignUp }) => {
-  const auth = useFirebaseAuth()
+interface AuthFormProps {
+  isSignUp?: boolean
+}
+
+const AuthForm = ({ isSignUp = false }: AuthFormProps) => {
   const [signIn, signInState] = useSignInMutation()
   const [signUp, signUpState] = useSignUpMutation()
-  const [signOut, signOutState] = useSignOutMutation()
-  const user = useAppSelector((state) => state.auth.user)
 
-  const [email, setEmail] = useState('500griven@gmail.com')
-  const [password, setPassword] = useState('energystar5520')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleSubmit = () => {
-    signIn({ email, password })
-    console.log('Email:', email)
-    console.log('Password:', password)
+    if (isSignUp) {
+      signUp({ email, password })
+    } else {
+      signIn({ email, password })
+    }
   }
 
-  console.log('~~~~~~~~~~~~~~ auth redux user', user)
-  console.log('~~~~~~~~~~~~~~ signInState', signInState.error)
-  console.log('~~~~~~~~~~~~~~ error', auth?.error)
+  const isLoading = signInState.isLoading || signUpState.isLoading
+  const error = signInState.error || signUpState.error
 
   return (
     <View style={styles.container}>
-      <TextInput placeholder='Email' onChangeText={(text) => setEmail(text)} value={email} />
       <TextInput
+        style={styles.input}
+        placeholder='Email'
+        onChangeText={setEmail}
+        value={email}
+        autoCapitalize='none'
+        keyboardType='email-address'
+      />
+      <TextInput
+        style={styles.input}
         placeholder='Password'
         secureTextEntry
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
         value={password}
       />
-      <Button title={isSignUp ? 'Sign Up' : 'Log In'} onPress={handleSubmit} />
-      <Button title={'SignOut'} onPress={signOut} />
+      {error && (
+        <Text style={styles.errorText}>
+          {(error as any)?.data || 'An error occurred'}
+        </Text>
+      )}
+      <Button
+        title={isLoading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Log In'}
+        onPress={handleSubmit}
+        disabled={isLoading}
+      />
     </View>
   )
 }
@@ -43,9 +59,18 @@ const styles = StyleSheet.create({
   container: {
     padding: 20
   },
-  button: {
-    marginTop: 20,
-    backgroundColor: 'blue'
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    fontSize: 16
+  },
+  errorText: {
+    color: '#ff3b30',
+    marginBottom: 16,
+    textAlign: 'center'
   }
 })
 
