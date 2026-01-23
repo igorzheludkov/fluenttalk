@@ -1,9 +1,14 @@
 export type TMainTabs = {
+  SamplesStack: undefined
   DayStack: undefined
   DialogStack: undefined
   BookmarksStack: undefined
   RatingStack: undefined
   ProfileStack: undefined
+}
+
+export type TSamplesStack = {
+  SamplesList: undefined
 }
 
 export type TRootNavigator = {

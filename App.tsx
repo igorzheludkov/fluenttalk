@@ -1,13 +1,15 @@
-import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
+import { PersistGate } from 'redux-persist/integration/react'
 import RootNavigator from '@/navigation/RootNavigator'
 import { Provider } from 'react-redux'
-import { store } from '@/store'
+import { store, persistor } from '@/store'
 import { StatusBar } from 'expo-status-bar'
 import useAuthStateListener from '@/hooks/useAuthStateListener'
+import useShareIntentHandler from '@/hooks/useShareIntent'
 
 function AppContent() {
   useAuthStateListener()
+  useShareIntentHandler()
 
   return (
     <>
@@ -22,7 +24,9 @@ function AppContent() {
 function App() {
   return (
     <Provider store={store}>
-      <AppContent />
+      <PersistGate loading={null} persistor={persistor}>
+        <AppContent />
+      </PersistGate>
     </Provider>
   )
 }

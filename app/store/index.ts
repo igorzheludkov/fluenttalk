@@ -1,19 +1,48 @@
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER
+} from 'redux-persist'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import appSlice from '@/store/app/appSlice'
 import authSlice from '@/store/auth/authSlice'
+import samplesSlice from '@/store/samples/samplesSlice'
 import apiSlice from '@/store/api/apiSlice'
-import { configureStore } from '@reduxjs/toolkit'
 
-export const store = configureStore({
-  reducer: {
-    app: appSlice,
-    auth: authSlice,
-    [apiSlice.reducerPath]: apiSlice.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(apiSlice.middleware)
+const rootReducer = combineReducers({
+  app: appSlice,
+  auth: authSlice,
+  samples: samplesSlice,
+  [apiSlice.reducerPath]: apiSlice.reducer
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage: AsyncStorage,
+  whitelist: ['samples']
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    }).concat(apiSlice.middleware as ReturnType<typeof getDefaultMiddleware>[number])
+})
+
+export const persistor = persistStore(store)
+
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
